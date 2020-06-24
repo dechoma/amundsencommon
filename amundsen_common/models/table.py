@@ -100,6 +100,18 @@ class SourceSchema(AttrsSchema):
         register_as_scheme = True
 
 
+@attr.s(auto_attribs=True, kw_only=True)
+class TableReport:
+    name: str
+    url: str
+
+
+class TableReportSchema(AttrsSchema):
+    class Meta:
+        target = TableReport
+        register_as_scheme = True
+
+
 # this is a temporary hack to satisfy mypy. Once https://github.com/python/mypy/issues/6136 is resolved, use
 # `attr.converters.default_if_none(default=False)`
 def default_if_none(arg: Optional[bool]) -> bool:
@@ -134,6 +146,7 @@ class Table:
     table_writer: Optional[Application] = None
     last_updated_timestamp: Optional[int] = None
     source: Optional[Source] = None
+    table_reports: Optional[List[TableReport]] = None
     is_view: Optional[bool] = attr.ib(default=None, converter=default_if_none)
     programmatic_descriptions: List[ProgrammaticDescription] = []
 
